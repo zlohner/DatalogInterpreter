@@ -1,7 +1,7 @@
 CC := g++
 SRCDIR := src
 BUILDDIR := build
-TARGET := DatalogInterpreter
+TARGET := DatalogInterpreter.o
 SRCEXT := cpp
 CFLAGS := -Wall -g -std=c++11
 

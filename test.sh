@@ -43,7 +43,7 @@ function test() {
 	diffFile="test/diff.txt"
 	
 	echo -n "TEST $2 ... "
-	time build/DatalogInterpreter "$inFile" > "$outFile"
+	time build/DatalogInterpreter.o "$inFile" > "$outFile"
 	diff -b "$outFile" "$expectedFile" > "$diffFile"
 	
 	diffOutput=""
