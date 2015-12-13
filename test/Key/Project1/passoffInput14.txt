@@ -1,0 +1,25 @@
+
+
+'Here''s a string'
+'Here's another string
+'here''s a multiline
+	string'
+
+'				'
+'		''	'
+'	Schemes
+Rules
+Queries'
+@$%^&!-#	
+	@
+	$
+	%
+	^
+	&
+	!
+	-
+	#
+'this string
+doesn''t
+terminate
+

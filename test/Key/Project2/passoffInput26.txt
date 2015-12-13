@@ -1,0 +1,12 @@
+# passoffInput26     SUCCESS
+Schemes:
+
+noDeath( n , d )
+
+Facts:
+
+Rules:
+
+Queries:
+
+noDeath( 'no' , 'Death' )?
