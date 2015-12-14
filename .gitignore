@@ -5,3 +5,4 @@
 *.o.dSYM/
 zips/
 zip.sh
+zip2.sh
