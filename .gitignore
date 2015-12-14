@@ -1,5 +1,7 @@
 .DS_Store
-build/
-test/
-test2/
+*.txt
+*.zip
+*.o
+*.o.dSYM/
 zips/
+zip.sh
