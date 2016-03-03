@@ -19,13 +19,13 @@ private:
 		Relation r = db.relation(query.name());
 
 		// Select
-        vector<pair<int,string> > values;
+		vector<pair<int,string> > values;
 
 		for (unsigned int i = 0; i < query.parameterList()->size(); i++)
-            if (query.parameterList()->at(i).type() == STRING) {
-                values.push_back(pair<int, string>(i, query.parameterList()->at(i).value()));
-            }
-        r.select(values);
+			if (query.parameterList()->at(i).type() == STRING) {
+				values.push_back(pair<int, string>(i, query.parameterList()->at(i).value()));
+			}
+		r.select(values);
 
 		// Project
 		vector<int> indices;
@@ -40,42 +40,42 @@ private:
 		return r;
 	}
 
-    vector<int> projectDelta(const Predicate* headPredicate, const vector<string> &schema) {
-        vector<int> delta;
-        for (int i = 0; i < headPredicate->parameterList()->size(); i++) {
-            for (int j = 0; j < schema.size(); j++) {
-                if (headPredicate->parameterList()->at(i).value() == schema[j]) {
-                    delta.push_back(j);
-                    break;
-                }
-            }
-        }
-        return delta;
-    }
+	vector<int> projectDelta(const Predicate* headPredicate, const vector<string> &schema) {
+		vector<int> delta;
+		for (int i = 0; i < headPredicate->parameterList()->size(); i++) {
+			for (int j = 0; j < schema.size(); j++) {
+				if (headPredicate->parameterList()->at(i).value() == schema[j]) {
+					delta.push_back(j);
+					break;
+				}
+			}
+		}
+		return delta;
+	}
 
-    void evaluateRule(int i, DatalogProgram* program) {
-        const Predicate* headPredicate = program->rules()->at(i).headPredicate();
-        const vector<Predicate>* predList = program->rules()->at(i).predList();
+	void evaluateRule(int i, DatalogProgram* program) {
+		const Predicate* headPredicate = program->rules()->at(i).headPredicate();
+		const vector<Predicate>* predList = program->rules()->at(i).predList();
 
-        Relation answer = query(predList->at(0));
-        for (int i = 1; i < predList->size(); i++) {
-            answer.join(query(predList->at(i)));
-        }
-        vector<int> projectDeltaVec = projectDelta(headPredicate, *(answer.schema()));
-        answer.project(projectDeltaVec);
-        db.addTuples(headPredicate->name(), *answer.tuples());
-    }
+		Relation answer = query(predList->at(0));
+		for (int i = 1; i < predList->size(); i++) {
+			answer.join(query(predList->at(i)));
+		}
+		vector<int> projectDeltaVec = projectDelta(headPredicate, *(answer.schema()));
+		answer.project(projectDeltaVec);
+		db.addTuples(headPredicate->name(), *answer.tuples());
+	}
 
-    void evaluateRuleSet(const set<int>& SCC, DatalogProgram* program, bool simple) {
-        int passes = 0;
-        int dbsize = 0;
-        do {
-            passes++;
-            dbsize = db.size();
-            for (int i : SCC) {
-                evaluateRule(i, program);
-            }
-        } while (dbsize < db.size() && !simple);
+	void evaluateRuleSet(const set<int>& SCC, DatalogProgram* program, bool simple) {
+		int passes = 0;
+		int dbsize = 0;
+		do {
+			passes++;
+			dbsize = db.size();
+			for (int i : SCC) {
+				evaluateRule(i, program);
+			}
+		} while (dbsize < db.size() && !simple);
 		cout << passes << " passes: ";
 		bool first = true;
 		for (int i : SCC) {
@@ -84,7 +84,7 @@ private:
 			cout << "R" << i;
 		}
 		cout << endl;
-    }
+	}
 
 	SCCGraph dependencyGraph(DatalogProgram* program) {
 		SCCGraph g;
@@ -149,7 +149,7 @@ public:
 
 		// Rules
 
-        // All Rules (Change to SCCs)
+		// All Rules (Change to SCCs)
 		vector<set<int> > SCCs = findSCCs(program);
 
 		cout << "Rule Evaluation" << endl;
@@ -163,12 +163,12 @@ public:
 		for (Predicate q : *(program->queries())) {
 			Relation r = query(q);
 
-            // Print
-    		cout << q << "?";
-    		if (r.size() > 0) cout << " Yes(" << r.size() << ")";
-    		else cout << " No";
-    		cout << r << endl;
-        }
+			// Print
+			cout << q << "?";
+			if (r.size() > 0) cout << " Yes(" << r.size() << ")";
+			else cout << " No";
+			cout << r << endl;
+		}
 
 		db.clear();
 		delete program;

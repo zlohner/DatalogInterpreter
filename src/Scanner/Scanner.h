@@ -12,11 +12,11 @@ using namespace std;
 class Scanner {
 private:
 	static map<string, TokType> keywords;
-	
+
 	char curr;
 	int lineNum;
-	
-	/* scanString	 
+
+	/* scanString
 	 * reads a string token from the file
 	 * @return: the string token
 	 * @throws: error message if EoF is found before end of string
@@ -25,12 +25,12 @@ private:
 		int startLineNum = lineNum;
 		string value;
 		value += curr;
-		
+
 		bool end = false;
 		while (!end) {
 			if (!cin.get(curr))
 				return Token(UNDEFINED, value, startLineNum); // throw "Input Error on line " + to_string(startLineNum);
-			
+
 			if (curr == '\n')
 				lineNum++;
 			else if (curr == '\'') {
@@ -40,13 +40,13 @@ private:
 				}
 				else end = true;
 			}
-			
+
 			value += curr;
 		}
 		return Token(STRING, value, startLineNum);
 	}
-	
-	/* scanComment	 
+
+	/* scanComment
 	 * reads a comment token from the file
 	 * @return: the comment token
 	 * @throws: error message if EoF is found before end of comment
@@ -55,39 +55,39 @@ private:
 		int startLineNum = lineNum;
 		string value;
 		value += curr;
-		
+
 		if (cin.peek() == '|') { // Multiline
 			cin.get(curr);
 			value += curr;
-			
+
 			bool end = false;
 			while (!end) {
 				if (!cin.get(curr))
 					return Token(UNDEFINED, value, startLineNum); // throw "Input Error on line " + to_string(startLineNum);
-				
+
 				if (curr == '\n')
 					lineNum++;
 				else if (curr == '|' && cin.peek() == '#')
 					end = true;
-				
+
 				value += curr;
 			}
-			
+
 			cin.get(curr);
 			value += curr;
 		}
 		else { // Single line
 			while (cin.peek() != '\n') {
-				cin.get(curr); 
+				cin.get(curr);
 				value += curr;
 			}
 		}
-		
+
 		return Token(COMMENT, value, startLineNum);
 	}
-	
-	/* scanID	 
-	 * reads an ID token from the file 
+
+	/* scanID
+	 * reads an ID token from the file
 	 * If it is a keyword, a keyword token is created instead
 	 * @return: the ID or Keyword token
 	 */
@@ -103,7 +103,7 @@ private:
 		else
 			return Token(ID, value, lineNum);
 	}
-	
+
 	Token getToken(bool& addToken) {
 		Token t;
 		switch(curr) {
@@ -112,7 +112,7 @@ private:
 			case '?': t = Token(Q_MARK, "?", lineNum); break;
 			case '(': t = Token(LEFT_PAREN, "(", lineNum); break;
 			case ')': t = Token(RIGHT_PAREN, ")", lineNum); break;
-			case ':': 
+			case ':':
 				if (cin.peek() == '-') {
 					cin.get(curr);
 					t = Token(COLON_DASH, ":-", lineNum);
@@ -126,12 +126,10 @@ private:
 			default:
 				if (isalpha(curr)) {
 					t = scanID();
-				}
-				else if (isspace(curr)) {
+				} else if (isspace(curr)) {
 					if (curr == '\n') lineNum++;
 					addToken = false;
-				}
-				else {
+				} else {
 					string symbol;
 					symbol += curr;
 					t = Token(UNDEFINED, symbol, lineNum); // throw "Input Error on line " + to_string(lineNum);
@@ -140,11 +138,11 @@ private:
 		}
 		return t;
 	}
-	
+
 public:
 	Scanner() {}
 	virtual ~Scanner() {}
-	
+
 	/* scancout
 	 * performs lexical analysis on a Datalog file, returning a list of tokens found in the file
 	 * @return: a deque representing the list of tokens
@@ -152,12 +150,12 @@ public:
 	deque<Token>* scan(bool print) {
 		deque<Token>* tokens = new deque<Token>();
 		lineNum = 1;
-		
+
 		while (cin.get(curr)) {
 			bool addToken = true;
-			
+
 			Token t = getToken(addToken);
-			
+
 			if (addToken) tokens->push_back(t);
 			if (print) cout << t << endl;
 		}

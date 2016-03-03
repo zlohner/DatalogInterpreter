@@ -32,48 +32,48 @@ public:
 	void addTuples(const set<Tuple>& newTuples) { for(Tuple t : newTuples) addTuple(t); }
 
 	void selectEqual(const vector<pair<int, int> > &equals) {
-        set<Tuple> newTuples;
+		set<Tuple> newTuples;
 		for (const Tuple &t : tuples_) {
-            bool add = true;
-            for (unsigned int i = 0; i < equals.size(); i++) {
-                if (t[equals[i].first] != t[equals[i].second]) {
-                    add = false;
+			bool add = true;
+			for (unsigned int i = 0; i < equals.size(); i++) {
+				if (t[equals[i].first] != t[equals[i].second]) {
+					add = false;
 					break;
 				}
 			}
-            if (add) newTuples.insert(t);
+			if (add) newTuples.insert(t);
 		}
-        setTuples(newTuples);
+		setTuples(newTuples);
 	}
 
 	void select(const vector<pair<int, string> > &values) {
-        set<Tuple> newTuples;
+		set<Tuple> newTuples;
 		for (const Tuple &t : tuples_) {
-            bool add = true;
-            for (unsigned int i = 0; i < values.size(); i++) {
-                if (t[values[i].first] != values[i].second) {
-                    add = false;
+			bool add = true;
+			for (unsigned int i = 0; i < values.size(); i++) {
+				if (t[values[i].first] != values[i].second) {
+					add = false;
 					break;
 				}
 			}
-            if (add) newTuples.insert(t);
+			if (add) newTuples.insert(t);
 		}
-        setTuples(newTuples);
+		setTuples(newTuples);
 	}
 
 	void project(const vector<int> &indices) {
-        // Schema
-        vector<string> newSchema;
+		// Schema
+		vector<string> newSchema;
 		for (unsigned int i = 0; i < indices.size(); i++)
-            newSchema.push_back(schema_[indices[i]]);
-        setSchema(newSchema);
+			newSchema.push_back(schema_[indices[i]]);
+		setSchema(newSchema);
 
-        // Tuples
+		// Tuples
 		set<Tuple> newTuples;
 		for (const Tuple &t : tuples_) {
-            Tuple newT;
+			Tuple newT;
 			for (unsigned int i = 0; i < indices.size(); i++)
-                newT.push_back(t[indices[i]]);
+				newT.push_back(t[indices[i]]);
 			newTuples.insert(newT);
 		}
 		setTuples(newTuples);
@@ -88,63 +88,63 @@ public:
 			}
 		}
 
-        vector<pair<int, int> > equals;
+		vector<pair<int, int> > equals;
 		for (unsigned int i = 0; i < schema_.size(); i++) {
 			for (unsigned int j = i + 1; j < schema_.size(); j++) {
 				if (schema_[i] == schema_[j])
 					equals.push_back(pair<int, int>(i, j));
 			}
 		}
-        selectEqual(equals);
+		selectEqual(equals);
 	}
 
-    vector<pair<int, int> > findRestrictions(const Relation& r) {
-        vector<pair<int, int> > restrictions;
-        for (unsigned int i = 0; i < this->schema()->size(); i++) {
-            for (unsigned int j = 0; j < r.schema()->size(); j++) {
-                if (this->schema()->at(i) == r.schema()->at(j)) {
-                   restrictions.push_back(pair<int, int>(i, j));
-                }
-            }
-        }
-        return restrictions;
-    }
+	vector<pair<int, int> > findRestrictions(const Relation& r) {
+		vector<pair<int, int> > restrictions;
+		for (unsigned int i = 0; i < this->schema()->size(); i++) {
+			for (unsigned int j = 0; j < r.schema()->size(); j++) {
+				if (this->schema()->at(i) == r.schema()->at(j)) {
+				   restrictions.push_back(pair<int, int>(i, j));
+				}
+			}
+		}
+		return restrictions;
+	}
 
-    vector<string> joinSchema(const Relation &r, const vector<pair<int, int> > &restrictions) {
-        vector<string> newSchema = *(this->schema());
-        for (unsigned int i = 0; i < r.schema()->size(); i++) {
-            bool add = true;
-            for (const pair<int, int> &p : restrictions) {
-                if (i == p.second) {
-                    add = false;
-                    break;
-                }
-            }
-            if (add) {
-                newSchema.push_back(r.schema()->at(i));
-            }
-        }
-        return newSchema;
-    }
+	vector<string> joinSchema(const Relation &r, const vector<pair<int, int> > &restrictions) {
+		vector<string> newSchema = *(this->schema());
+		for (unsigned int i = 0; i < r.schema()->size(); i++) {
+			bool add = true;
+			for (const pair<int, int> &p : restrictions) {
+				if (i == p.second) {
+					add = false;
+					break;
+				}
+			}
+			if (add) {
+				newSchema.push_back(r.schema()->at(i));
+			}
+		}
+		return newSchema;
+	}
 
-    void join(const Relation &r) {
-        Relation joined;
+	void join(const Relation &r) {
+		Relation joined;
 
-        vector<pair<int, int> > restrictions = findRestrictions(r);
+		vector<pair<int, int> > restrictions = findRestrictions(r);
 
-        setSchema(joinSchema(r, restrictions));
+		setSchema(joinSchema(r, restrictions));
 
-        set<Tuple> joinedTuples;
-        for (const Tuple &t1 : *(this->tuples())) {
-            for (const Tuple &t2 : *(r.tuples())) {
-                if (t1.isJoinable(t2, restrictions)) {
-                    joinedTuples.insert(t1.join(t2, restrictions));
-                }
-            }
-        }
+		set<Tuple> joinedTuples;
+		for (const Tuple &t1 : *(this->tuples())) {
+			for (const Tuple &t2 : *(r.tuples())) {
+				if (t1.isJoinable(t2, restrictions)) {
+					joinedTuples.insert(t1.join(t2, restrictions));
+				}
+			}
+		}
 
-        setTuples(joinedTuples);
-    }
+		setTuples(joinedTuples);
+	}
 
 	friend ostream& operator<< (ostream &out, const Relation &r) {
 		if (r.schema()->size() > 0) {

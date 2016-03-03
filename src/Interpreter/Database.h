@@ -23,12 +23,12 @@ public:
 
 	void clear() { relations_.clear(); }
 
-    int size() {
-        int size = 0;
-        for (map<string, Relation>::iterator it = relations_.begin(); it != relations_.end(); it++) {
-            size += it->second.size();
-        }
-        return size;
-    }
+	int size() {
+		int size = 0;
+		for (map<string, Relation>::iterator it = relations_.begin(); it != relations_.end(); it++) {
+			size += it->second.size();
+		}
+		return size;
+	}
 
 };
