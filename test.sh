@@ -75,7 +75,7 @@ function runTests() {
 		echo ""
 
 		echo -e "\033[34mRUNNING TESTS ... \033[0m"
-		if [ -e "build/DatalogInterpreter" ]; then
+		if [ -e "build/DatalogInterpreter.o" ]; then
 			fileNums=(1 2 3 4 5 6 7 8 9 0)
 			for i in ${fileNums[*]}; do
 				test $1 "$i"

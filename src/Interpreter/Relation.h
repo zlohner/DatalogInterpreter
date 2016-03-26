@@ -13,23 +13,23 @@ private:
 
 public:
 	Relation() {}
-	Relation(const vector<string>& schema) : schema_(schema) {}
-	Relation(const vector<Token>& schemaTokens) { setSchema(schemaTokens); }
-	Relation(const vector<string>& schema, const set<Tuple>& tuples) : schema_(schema), tuples_(tuples) {}
+	Relation(const vector<string> &schema) : schema_(schema) {}
+	Relation(const vector<Token> &schemaTokens) { setSchema(schemaTokens); }
+	Relation(const vector<string> &schema, const set<Tuple>& tuples) : schema_(schema), tuples_(tuples) {}
 	virtual ~Relation() {}
 
 	const vector<string>* schema() const { return &schema_; }
 	const set<Tuple>* tuples() const { return &tuples_; }
 	int size() const { return tuples_.size(); }
 
-	void setSchema(const vector<string>& schema) { schema_ = schema; }
-	void setSchema(const vector<Token>& schemaTokens) {
+	void setSchema(const vector<string> &schema) { schema_ = schema; }
+	void setSchema(const vector<Token> &schemaTokens) {
 		schema_.clear();
-		for (Token t : schemaTokens) schema_.push_back(t.value());
+		for (const Token &t : schemaTokens) schema_.push_back(t.value());
 	}
-	void setTuples(const set<Tuple>& tuples) { tuples_ = tuples; }
-	void addTuple(const Tuple& t) { tuples_.insert(t); }
-	void addTuples(const set<Tuple>& newTuples) { for(Tuple t : newTuples) addTuple(t); }
+	void setTuples(const set<Tuple> &tuples) { tuples_ = tuples; }
+	void addTuple(const Tuple &t) { tuples_.insert(t); }
+	void addTuples(const set<Tuple> &newTuples) { for(const Tuple &t : newTuples) addTuple(t); }
 
 	void selectEqual(const vector<pair<int, int> > &equals) {
 		set<Tuple> newTuples;
@@ -98,7 +98,7 @@ public:
 		selectEqual(equals);
 	}
 
-	vector<pair<int, int> > findRestrictions(const Relation& r) {
+	vector<pair<int, int> > findRestrictions(const Relation &r) {
 		vector<pair<int, int> > restrictions;
 		for (unsigned int i = 0; i < this->schema()->size(); i++) {
 			for (unsigned int j = 0; j < r.schema()->size(); j++) {
