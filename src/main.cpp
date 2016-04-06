@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 
 	// Input and Output File
 	ifstream inFile(argv[1]);
-	// ifstream outFile(argv[2]);
+	// ofstream outFile(argv[2]);
 
 	// save cin & cout buffer
 	streambuf* cinbuf = cin.rdbuf();
