@@ -4,4 +4,3 @@
 *.o
 *.o.dSYM/
 zips/
-zip.sh
