@@ -1,8 +1,14 @@
 #/bin/bash
 
+NORM="\033[0m"
+HEAD="\033[35m"
+INFO="\033[34m"
+PASS="\033[32m"
+FAIL="\033[31m"
+
 function testComplexity() {
 
-	echo -n -e "\033[34mTESTING COMPLEXITY ... \033[0m"
+	echo -n -e "${BLUE}TESTING COMPLEXITY ... ${NORM}"
 
 	pmccabeFile="test/pmccabe.txt"
 	rm "$pmccabeFile"
@@ -28,18 +34,18 @@ function testComplexity() {
 	done < "$pmccabeFile"
 
 	if $failedComplexity; then
-		echo -e "\033[31mFAILED COMPLEXITY\033[0m"
+		echo -e "${FAIL}FAILED COMPLEXITY${NORM}"
 		return 1
 	else
-		echo -e "\033[32mPASSED COMPLEXITY\033[0m"
+		echo -e "${PASS}PASSED COMPLEXITY${NORM}"
 		return 0
 	fi
 }
 
 function test() {
-	inFile="test/Key/Project$1/in$1$2.txt"
+	inFile="test/key/p$1/in$1$2.txt"
 	outFile="test/outputs/out$2.txt"
-	expectedFile="test/Key/Project$1/out$1$2.txt"
+	expectedFile="test/key/p$1/out$1$2.txt"
 	diffFile="test/diff.txt"
 
 	echo -n "TEST $2 ... "
@@ -53,9 +59,9 @@ function test() {
 	done < "$diffFile"
 
 	if [ -z "$diffOutput" ]; then
-		echo -e "\033[32mPASSED\033[0m"
+		echo -e "${PASS}PASSED${NORM}"
 	else
-		echo -e "\033[31mFAILED\033[0m"
+		echo -e "${FAIL}FAILED${NORM}"
 		vimdiff -b "$outFile" "$expectedFile"
 	fi
 }
@@ -65,16 +71,16 @@ function runTests() {
 		echo ""
 
 		if [ -e "build/DatalogInterpreter" ]; then
-			echo -e "\033[34mCLEANING ... \033[0m"
+			echo -e "${INFO}CLEANING ... ${NORM}"
 			make clean
 			echo ""
 		fi
 
-		echo -e "\033[34mCOMPILING ... \033[0m"
+		echo -e "${INFO}COMPILING ... ${NORM}"
 		make
 		echo ""
 
-		echo -e "\033[34mRUNNING TESTS ... \033[0m"
+		echo -e "${INFO}RUNNING TESTS ... ${NORM}"
 		lab=5
 		if [ -e "build/DatalogInterpreter.o" ]; then
 			fileNums=(1 2 3 4 5 6 7 8 9 0)
@@ -86,7 +92,7 @@ function runTests() {
 }
 
 echo ""
-echo -e "\033[35mTEST BUILD\033[0m"
+echo -e "${HEAD}TEST BUILD${NORM}"
 echo ""
 runTests
-echo -e "\033[0m"
+echo -e "${NORM}"

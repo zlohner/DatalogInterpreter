@@ -1,5 +1,0 @@
-# passoffInput28     FAILURE Facts,3
-Schemes:
-Facts:
-Rules:
-Queries:

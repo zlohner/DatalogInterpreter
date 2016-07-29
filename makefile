@@ -8,7 +8,8 @@ CFLAGS := -Wall -g -std=c++11
 SOURCES := $(shell find $(SRCDIR) -name "*.$(SRCEXT)")
 
 all:
+	if [ ! -d "build" ]; then mkdir build; fi
 	$(CC) $(CFLAGS) $(SOURCES) -o $(BUILDDIR)/$(TARGET)
 	
 clean:
-	rm -r $(BUILDDIR)/$(TARGET) $(BUILDDIR)/$(TARGET).dSYM
+	rm -r $(BUILDDIR)
