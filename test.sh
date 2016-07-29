@@ -37,9 +37,9 @@ function testComplexity() {
 }
 
 function test() {
-	inFile="test/Key/Project$1/passoffInput$1$2.txt"
+	inFile="test/Key/Project$1/in$1$2.txt"
 	outFile="test/outputs/out$2.txt"
-	expectedFile="test/Key/Project$1/passoffAnswer$1$2.txt"
+	expectedFile="test/Key/Project$1/out$1$2.txt"
 	diffFile="test/diff.txt"
 
 	echo -n "TEST $2 ... "
@@ -75,22 +75,18 @@ function runTests() {
 		echo ""
 
 		echo -e "\033[34mRUNNING TESTS ... \033[0m"
+		lab=5
 		if [ -e "build/DatalogInterpreter.o" ]; then
 			fileNums=(1 2 3 4 5 6 7 8 9 0)
 			for i in ${fileNums[*]}; do
-				test $1 "$i"
+				test $lab "$i"
 			done
 		fi
 	fi
 }
 
-if [ -z $1 ]; then
-	echo -e "\033[31mPLEASE SPECIFY PROJECT NUMBER\033[0m"
-	exit 1
-fi
-
 echo ""
 echo -e "\033[35mTEST BUILD\033[0m"
 echo ""
-runTests $1
+runTests
 echo -e "\033[0m"

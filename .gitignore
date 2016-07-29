@@ -1,7 +1,0 @@
-.DS_Store
-*.txt
-*.zip
-*.o
-*.o.dSYM/
-zips/
-zip.sh

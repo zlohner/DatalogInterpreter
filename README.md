@@ -8,5 +8,3 @@ an interpreter for the Datalog relational database language,
 for the CS236 course at Brigham Young University.
 
 Output is written to standard out (cout)
-
-NOTE: incomplete, does not work!

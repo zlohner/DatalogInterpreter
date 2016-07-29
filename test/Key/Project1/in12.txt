@@ -1,0 +1,13 @@
+
+Schemes Facts Rules Queries
+schemes facts rules queries
+#Schemes Facts Rules Queries
+identifier
+
+'string'
+''
+:-
+!=>=<=
+
+Schemes:FactsRulesQueries'hello'::-,(.?)=!=><>=<=*+identifier
+

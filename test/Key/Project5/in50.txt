@@ -1,0 +1,82 @@
+Schemes:
+
+ridiculousjoin(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T)
+combinations(A,B,C,D,E)
+be(B,E)
+ce(C,E)
+bcd(B,C,D)
+ade(A,D,E)
+chars(ALL)
+permutations(A,B,C,D,E,F)
+a(x,y)
+b(x,y)
+c(x,y)
+d(x,y)
+e(x,y)
+f(x,y)
+g(x,y)
+all(x,y)
+combo(A,B,C,D,E)
+combojoin(A,B,C,D,E,F,G,H)
+
+Facts:
+
+ a('1','1').
+   a('1','2').
+   a('1','3').
+   a('1','4').
+   a('2','2').
+   a('2','3').
+   a('2','4').
+   a('3','3').
+   a('3','4').
+   a('4','4').
+   permutations('a','b','c','d','e','f').
+   combinations('a','b','c','d','e').
+   
+Rules:
+
+#the commented out rules are too much for the program
+
+#ridiculousjoin(b,a,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t):-ridiculousjoin(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t).
+#ridiculousjoin(b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,a):-ridiculousjoin(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t).
+#ridiculousjoin(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t):-join(a,b,c,d,e,f,g,h,i,j),join(k,l,m,n,o,p,q,r,s,t).
+
+#join(b,a,c,d,e,f,g,h,i,j):-join(a,b,c,d,e,f,g,h,i,j).
+#join(b,c,d,e,f,g,h,i,j,a):-join(a,b,c,d,e,f,g,h,i,j).
+#join(a,b,c,d,e,f,g,h,i,j):- combinations(a,b,c,d,e),combinations(f,g,h,i,j).
+
+combojoin(a,b,c,d,e,f,g,h):-combo(a,b,c,d,e),combo(d,e,f,g,h).
+combo(a,b,c,d,e):-combinations(a,b,c,d,e),combinations(e,d,c,b,a).
+
+combinations(b,c,d,e,a):-combinations(a,b,c,d,e).
+combinations(a,b,c,d,e):-be(b,e),ce(c,e),bcd(b,c,d),ade(a,d,e).
+ade(a,d,e):-chars(a),chars(d),chars(e).
+bcd(b,c,d):-chars(b),chars(c),chars(d).
+ce(c,e):-chars(c),chars(e).
+be(b,e):-chars(b),chars(e).
+chars(a):-combinations(a,b,c,d,e).
+
+permutations(b,a,c,d,e,f):-permutations(a,b,c,d,e,f).
+permutations(b,c,d,e,f,a):-permutations(a,b,c,d,e,f).
+
+
+all(X,Y):-a(X,Y),b(X,Y),c(X,Y),d(X,Y),e(X,Y),f(X,Y),g(X,Y).
+g(X,Y):-f(X,Y).
+f(X,Y):-e(X,Y).
+e(X,Y):-d(X,Y).
+d(X,Y):-c(X,Y).
+c(X,Y):-b(X,Y).
+b(X,Y):-a(X,Y).
+a(X,Y):-a(Y,X).
+   
+Queries:
+
+all(X,Y)?
+permutations(AA,BB,CC,DD,EE,FF)?
+combinations(AA,BB,CC,DD,EE)?
+combo(AA,BB,CC,DD,EE)?
+combojoin(AA,BB,CC,DD,EE,FF,GG,HH)?
+#join(AA,BB,CC,DD,EE,FF,GG,HH,II,JJ)?
+#ridiculousjoin(AA,BB,CC,DD,EE,FF,GG,HH,II,JJ,KK,LL,MM,NN,OO,PP,QQ,RR,SS,TT)?
+   
