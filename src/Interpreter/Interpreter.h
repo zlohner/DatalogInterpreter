@@ -22,9 +22,8 @@ private:
 		vector<pair<int,string> > values;
 
 		for (unsigned int i = 0; i < query.parameterList()->size(); i++)
-			if (query.parameterList()->at(i).type() == STRING) {
+			if (query.parameterList()->at(i).type() == STRING)
 				values.push_back(pair<int, string>(i, query.parameterList()->at(i).value()));
-			}
 		r.select(values);
 
 		// Project
@@ -42,8 +41,8 @@ private:
 
 	vector<int> projectDelta(const Predicate* headPredicate, const vector<string> &schema) {
 		vector<int> delta;
-		for (int i = 0; i < headPredicate->parameterList()->size(); i++) {
-			for (int j = 0; j < schema.size(); j++) {
+		for (unsigned int i = 0; i < headPredicate->parameterList()->size(); i++) {
+			for (unsigned int j = 0; j < schema.size(); j++) {
 				if (headPredicate->parameterList()->at(i).value() == schema[j]) {
 					delta.push_back(j);
 					break;
@@ -58,12 +57,12 @@ private:
 		const vector<Predicate>* predList = program->rules()->at(i).predList();
 
 		Relation answer = query(predList->at(0));
-		for (int i = 1; i < predList->size(); i++) {
+		for (unsigned int i = 1; i < predList->size(); i++) {
 			answer.join(query(predList->at(i)));
 		}
-		vector<int> projectDeltaVec = projectDelta(headPredicate, *(answer.schema()));
-		answer.project(projectDeltaVec);
-		db.addTuples(headPredicate->name(), *answer.tuples());
+		vector<int> delta = projectDelta(headPredicate, *(answer.schema()));
+		answer.project(delta);
+		db.addTuples(headPredicate->name(), *(answer.tuples()));
 	}
 
 	void evaluateRuleSet(const set<int>& SCC, DatalogProgram* program, bool simple) {
@@ -88,7 +87,7 @@ private:
 
 	SCCGraph dependencyGraph(DatalogProgram* program) {
 		SCCGraph g;
-		for (int i = 0; i < program->rules()->size(); i++) {
+		for (unsigned int i = 0; i < program->rules()->size(); i++) {
 			g.addNode();
 		}
 		for (const Rule &r : (*program->rules())) {

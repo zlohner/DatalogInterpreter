@@ -9,7 +9,7 @@ public:
 
 	bool isJoinable(const Tuple &t, vector<pair<int, int> > &restrictions) const {
 		for (const pair<int, int> &p : restrictions) {
-			if (this->at(p.first) != t[p.second]) {
+			if (at(p.first) != t[p.second]) {
 				return false;
 			}
 		}
@@ -21,7 +21,7 @@ public:
 		for (unsigned int i = 0; i < t.size(); i++) {
 			bool add = true;
 			for (const pair<int, int> &p : restrictions) {
-				if (i == p.second) {
+				if ((int)i == p.second) {
 					add = false;
 					break;
 				}
@@ -35,7 +35,7 @@ public:
 
 	friend ostream& operator<< (ostream &out, const Tuple &r) {
 		out << "( ";
-		for (int i = 0; i < r.size(); i++) {
+		for (unsigned int i = 0; i < r.size(); i++) {
 			out << r[i] << " ";
 		}
 		out << ")";

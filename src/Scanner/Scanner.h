@@ -143,7 +143,7 @@ public:
 	Scanner() {}
 	virtual ~Scanner() {}
 
-	/* scancout
+	/* scan
 	 * performs lexical analysis on a Datalog file, returning a list of tokens found in the file
 	 * @return: a deque representing the list of tokens
 	 */

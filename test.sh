@@ -43,9 +43,9 @@ function testComplexity() {
 }
 
 function test() {
-	inFile="test/key/p$1/in$1$2.txt"
+	inFile="test/Key/p$1/in$1$2.txt"
 	outFile="test/outputs/out$2.txt"
-	expectedFile="test/key/p$1/out$1$2.txt"
+	expectedFile="test/Key/p$1/out$1$2.txt"
 	diffFile="test/diff.txt"
 
 	echo -n "TEST $2 ... "
@@ -70,7 +70,7 @@ function runTests() {
 	if testComplexity; then
 		echo ""
 
-		if [ -e "build/DatalogInterpreter" ]; then
+		if [ -e "build/DatalogInterpreter.o" ]; then
 			echo -e "${INFO}CLEANING ... ${NORM}"
 			make clean
 			echo ""
@@ -80,13 +80,15 @@ function runTests() {
 		make
 		echo ""
 
-		echo -e "${INFO}RUNNING TESTS ... ${NORM}"
-		lab=5
 		if [ -e "build/DatalogInterpreter.o" ]; then
+			echo -e "${INFO}RUNNING TESTS ... ${NORM}"
+			lab=5
 			fileNums=(1 2 3 4 5 6 7 8 9 0)
 			for i in ${fileNums[*]}; do
 				test $lab "$i"
 			done
+		else
+			echo -e "${FAIL}COMPILATION FAILED${NORM}"
 		fi
 	fi
 }

@@ -29,7 +29,7 @@ public:
 	}
 	void setTuples(const set<Tuple> &tuples) { tuples_ = tuples; }
 	void addTuple(const Tuple &t) { tuples_.insert(t); }
-	void addTuples(const set<Tuple> &newTuples) { for(const Tuple &t : newTuples) addTuple(t); }
+	void addTuples(const set<Tuple> &newTuples) { for(const Tuple &t : newTuples) tuples_.insert(t); }
 
 	void selectEqual(const vector<pair<int, int> > &equals) {
 		set<Tuple> newTuples;
@@ -100,10 +100,10 @@ public:
 
 	vector<pair<int, int> > findRestrictions(const Relation &r) {
 		vector<pair<int, int> > restrictions;
-		for (unsigned int i = 0; i < this->schema()->size(); i++) {
+		for (unsigned int i = 0; i < schema()->size(); i++) {
 			for (unsigned int j = 0; j < r.schema()->size(); j++) {
-				if (this->schema()->at(i) == r.schema()->at(j)) {
-				   restrictions.push_back(pair<int, int>(i, j));
+				if (schema()->at(i) == r.schema()->at(j)) {
+					restrictions.push_back(pair<int, int>(i, j));
 				}
 			}
 		}
@@ -111,11 +111,11 @@ public:
 	}
 
 	vector<string> joinSchema(const Relation &r, const vector<pair<int, int> > &restrictions) {
-		vector<string> newSchema = *(this->schema());
+		vector<string> newSchema = *(schema());
 		for (unsigned int i = 0; i < r.schema()->size(); i++) {
 			bool add = true;
 			for (const pair<int, int> &p : restrictions) {
-				if (i == p.second) {
+				if ((int)i == p.second) {
 					add = false;
 					break;
 				}
@@ -128,14 +128,12 @@ public:
 	}
 
 	void join(const Relation &r) {
-		Relation joined;
-
 		vector<pair<int, int> > restrictions = findRestrictions(r);
 
 		setSchema(joinSchema(r, restrictions));
 
 		set<Tuple> joinedTuples;
-		for (const Tuple &t1 : *(this->tuples())) {
+		for (const Tuple &t1 : *(tuples())) {
 			for (const Tuple &t2 : *(r.tuples())) {
 				if (t1.isJoinable(t2, restrictions)) {
 					joinedTuples.insert(t1.join(t2, restrictions));
@@ -159,9 +157,9 @@ public:
 			}
 
 			for (set<Tuple>::iterator it = r.tuples()->begin(); it != r.tuples()->end(); it++) {
-					out << endl << "  " << r.schema()->at(0) << "=" << (*it)[0];
-					for (unsigned int i = 1; i < printVals.size(); i++)
-						out << ", " << r.schema()->at(printVals[i]) << "=" << (*it)[printVals[i]];
+				out << endl << "  " << r.schema()->at(0) << "=" << (*it)[0];
+				for (unsigned int i = 1; i < printVals.size(); i++)
+					out << ", " << r.schema()->at(printVals[i]) << "=" << (*it)[printVals[i]];
 			}
 		}
 
