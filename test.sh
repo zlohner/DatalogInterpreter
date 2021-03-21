@@ -8,7 +8,7 @@ FAIL="\033[31m"
 
 function testComplexity() {
 
-	echo -n -e "${BLUE}TESTING COMPLEXITY ... ${NORM}"
+	echo "${BLUE}TESTING COMPLEXITY ... ${NORM}"
 
 	pmccabeFile="test/pmccabe.txt"
 	rm "$pmccabeFile"
@@ -34,10 +34,10 @@ function testComplexity() {
 	done < "$pmccabeFile"
 
 	if $failedComplexity; then
-		echo -e "${FAIL}FAILED COMPLEXITY${NORM}"
+		echo "${FAIL}FAILED COMPLEXITY${NORM}"
 		return 1
 	else
-		echo -e "${PASS}PASSED COMPLEXITY${NORM}"
+		echo "${PASS}PASSED COMPLEXITY${NORM}"
 		return 0
 	fi
 }
@@ -48,7 +48,7 @@ function test() {
 	expectedFile="test/Key/p$1/out$1$2.txt"
 	diffFile="test/diff.txt"
 
-	echo -n "TEST $2 ... "
+	echo "TEST $2 ... "
 	time build/DatalogInterpreter.o "$inFile" > "$outFile"
 	diff -b "$outFile" "$expectedFile" > "$diffFile"
 
@@ -59,9 +59,9 @@ function test() {
 	done < "$diffFile"
 
 	if [ -z "$diffOutput" ]; then
-		echo -e "${PASS}PASSED${NORM}"
+		echo "${PASS}PASSED${NORM}"
 	else
-		echo -e "${FAIL}FAILED${NORM}"
+		echo "${FAIL}FAILED${NORM}"
 		vimdiff -b "$outFile" "$expectedFile"
 	fi
 }
@@ -71,30 +71,30 @@ function runTests() {
 		echo ""
 
 		if [ -e "build/DatalogInterpreter.o" ]; then
-			echo -e "${INFO}CLEANING ... ${NORM}"
+			echo "${INFO}CLEANING ... ${NORM}"
 			make clean
 			echo ""
 		fi
 
-		echo -e "${INFO}COMPILING ... ${NORM}"
+		echo "${INFO}COMPILING ... ${NORM}"
 		make
 		echo ""
 
 		if [ -e "build/DatalogInterpreter.o" ]; then
-			echo -e "${INFO}RUNNING TESTS ... ${NORM}"
+			echo "${INFO}RUNNING TESTS ... ${NORM}"
 			lab=5
-			fileNums=(1 2 3 4 5 6 7 8 9 0)
+			fileNums=(1 2 3 4 5 6 7 8 9)
 			for i in ${fileNums[*]}; do
 				test $lab "$i"
 			done
 		else
-			echo -e "${FAIL}COMPILATION FAILED${NORM}"
+			echo "${FAIL}COMPILATION FAILED${NORM}"
 		fi
 	fi
 }
 
 echo ""
-echo -e "${HEAD}TEST BUILD${NORM}"
+echo "${HEAD}TEST BUILD${NORM}"
 echo ""
 runTests
-echo -e "${NORM}"
+echo "${NORM}"

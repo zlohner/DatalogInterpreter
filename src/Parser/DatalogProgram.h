@@ -20,19 +20,19 @@ private:
 public:
 	DatalogProgram() {}
 	virtual ~DatalogProgram() {}
-	
+
 	const vector<Predicate>* schemes() const { return &schemes_; }
 	const vector<Predicate>* facts() const { return &facts_; }
 	const vector<Rule>* rules() const { return &rules_; }
 	const vector<Predicate>* queries() const { return &queries_; }
 	const set<string>* domain() const { return &domain_; }
-	
+
 	void addScheme(Predicate newScheme) { schemes_.push_back(newScheme); }
 	void addFact(Predicate newFact) { facts_.push_back(newFact); }
 	void addRule(Rule newRule) { rules_.push_back(newRule); }
 	void addQuery(Predicate newQuery) { queries_.push_back(newQuery); }
 	void addDomain(string value) { domain_.insert(value); }
-	
+
 	friend ostream& operator<< (ostream& out, const DatalogProgram& program) {
 		out << "Schemes(" << program.schemes()->size() << "):" << endl;
 		for (unsigned int i = 0; i < program.schemes()->size(); i++)
